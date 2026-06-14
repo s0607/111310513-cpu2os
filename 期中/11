@@ -1,0 +1,25 @@
+編譯方式
+在終端機輸入：
+gcc simple_server.c -o simple_server
+執行方式
+./simple_server
+然後打開瀏覽器輸入：
+http://localhost:8080
+系統程式概念對照
+| 程式碼        | 系統程式概念       |
+| ---------- | ------------ |
+| `socket()` | 建立網路通訊端      |
+| `bind()`   | 綁定 IP 與 Port |
+| `listen()` | 讓伺服器進入監聽狀態   |
+| `accept()` | 接受使用者連線      |
+| `read()`   | 讀取 Client 請求 |
+| `write()`  | 回傳 Server 回應 |
+| `close()`  | 關閉檔案描述子      |
+
+說明
+這個程式建立了一個 TCP socket，並將它綁定在 8080 port。
+當瀏覽器連到 localhost:8080 時，伺服器會透過 accept() 接收連線，再用 read() 讀取 HTTP request，最後用 write() 回傳 HTML 網頁。
+
+這就是一個最基本的 Web Server。
+連結
+https://chatgpt.com/share/6a2ec3f6-7468-83ee-8559-39cb053be220

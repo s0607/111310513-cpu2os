@@ -1,0 +1,28 @@
+目標
+
+模擬同一個帳戶被多個 thread 同時存款與提款。
+
+存款 100000 次，每次加 1。
+提款 100000 次，每次減 1。
+
+最後金額應該不變。
+這個程式建立兩個 thread：
+
+deposit 負責存款
+withdraw 負責提款
+
+兩個 thread 都會操作共享變數 balance。
+
+因為 balance++ 和 balance-- 不是原子操作，所以必須使用 mutex 保護。
+
+程式中使用：
+
+pthread_mutex_lock(&mutex);
+
+進入臨界區，再用：
+
+pthread_mutex_unlock(&mutex);
+
+離開臨界區。
+
+因此同一時間只會有一個 thread 修改帳戶餘額，最後結果會保持正確。

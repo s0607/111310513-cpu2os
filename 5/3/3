@@ -1,0 +1,31 @@
+目標
+
+模擬一個生產者不斷生產資料，消費者從緩衝區取出資料。
+
+如果緩衝區滿了，生產者要等待。
+如果緩衝區空了，消費者
+
+此程式使用：
+
+buffer：共享緩衝區
+mutex：保護 buffer
+empty：表示還有多少空位
+full：表示有多少資料可以消費
+
+生產者流程：
+
+等待空位 sem_wait(&empty)
+鎖住 mutex
+放入資料
+解鎖 mutex
+通知有新資料 sem_post(&full)
+
+消費者流程：
+
+等待資料 sem_wait(&full)
+鎖住 mutex
+取出資料
+解鎖 mutex
+通知有空位 sem_post(&empty)
+
+這樣可以避免 buffer overflow 與 buffer underflow。

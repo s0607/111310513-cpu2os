@@ -1,0 +1,57 @@
+            Linux 目錄結構
+Linux 使用單一樹狀結構，以根目錄 / 為起點。
+/
+├── bin
+├── boot
+├── dev
+├── etc
+├── home
+├── lib
+├── media
+├── mnt
+├── opt
+├── proc
+├── root
+├── run
+├── sbin
+├── tmp
+├── usr
+└── var
+各目錄用途：
+/bin
+存放基本系統指令，例如：
+ls
+cp
+mv
+cat
+/etc
+存放系統設定檔。
+例如：
+/etc/passwd
+/etc/hosts
+
+/home
+每位使用者的家目錄。
+例如：
+/home/alice
+/home/bob
+
+/root
+超級使用者（root）的家目錄。
+
+/usr
+存放大部分應用程式。
+例如：
+/usr/bin
+/usr/lib
+/usr/share
+
+/var
+存放會持續變動的資料，例如：
+log
+cache
+mail
+
+/tmp
+存放暫存檔。
+系統重新開機後通常會清除。

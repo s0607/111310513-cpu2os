@@ -1,0 +1,31 @@
+            Shell 是什麼
+Shell 是命令列直譯器（Command Line Interpreter），負責解析使用者輸入的命令，並呼叫相應的程式執行。
+
+例如：
+ls
+Shell 的執行流程如下：
+使用者輸入 ls
+        │
+        ▼
+Shell 解析指令
+        │
+        ▼
+找到 /bin/ls
+        │
+        ▼
+Kernel 建立 Process
+        │
+        ▼
+執行 ls
+        │
+        ▼
+顯示目錄內容
+常見的 Shell 有：
+
+Bash（預設）
+Zsh
+Fish
+Dash
+Tcsh
+
+其中 Bash 是 Linux 最常使用的 Shell。

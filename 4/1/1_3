@@ -1,0 +1,14 @@
+            為什麼要學系統程式
+系統程式設計是資訊工程的重要基礎，因為許多高階技術都建立在系統程式之上。
+
+例如：
+
+作業系統（Linux、Windows）
+編譯器（GCC、LLVM）
+資料庫（MySQL、PostgreSQL）
+網頁伺服器（Nginx、Apache）
+容器技術（Docker）
+雲端運算（Kubernetes）
+人工智慧框架（TensorFlow、PyTorch）
+
+若不了解系統程式，雖然仍可開發一般應用程式，但較難理解程式效能、記憶體管理及系統資源的運作原理。

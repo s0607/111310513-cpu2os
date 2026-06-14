@@ -1,0 +1,55 @@
+1. Thread 執行緒
+
+Thread 是程式中的最小執行單位。一個程式可以同時建立多個 thread，讓不同工作看起來同時執行。
+
+例如銀行系統中，一個人可能同時進行存款與提款，如果兩個動作同時操作同一個帳戶餘額，就會發生資料同步問題。
+
+2. Race Condition 競爭條件
+
+Race Condition 是指多個 thread 同時存取同一份共享資料，而且至少有一個 thread 會修改資料，導致結果不固定或錯誤。
+
+例如：
+
+balance = balance + 1;
+
+這行看起來只有一行，但實際上可能包含：
+
+讀取 balance
+加 1
+寫回 balance
+
+如果兩個 thread 同時執行，就可能造成資料遺失。
+
+3. Mutex 互斥鎖
+
+Mutex 是 Mutual Exclusion 的縮寫，用來保護共享資源。
+
+當一個 thread 進入臨界區時，會先鎖住 mutex，其他 thread 必須等待。等目前 thread 完成操作後，再解鎖 mutex。
+
+基本概念：
+
+pthread_mutex_lock(&mutex);
+
+/* 臨界區 */
+
+pthread_mutex_unlock(&mutex);
+
+這樣可以避免多個 thread 同時修改同一份資料。
+
+4. Deadlock 死結
+
+Deadlock 是指多個 thread 互相等待對方釋放資源，導致全部卡住無法繼續執行。
+
+常見條件：
+
+互斥：資源一次只能被一個 thread 使用
+持有並等待：thread 拿著一個資源，又等待其他資源
+不可搶奪：資源不能被強制拿走
+循環等待：A 等 B，B 等 C，C 又等 A
+
+解決方法包括：
+
+固定取得鎖的順序
+使用 trylock
+避免同時持有多個鎖
+設計資源分配規則

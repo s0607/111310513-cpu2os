@@ -1,0 +1,256 @@
+        Unix 行程（Process）系統呼叫
+        行程（Process）是程式執行時的實體，每個行程都有自己的記憶體空間、程式計數器（PC）、暫存器及 PID（Process ID）。
+        
+1. fork()
+
+功能：
+建立一個新的子行程（Child Process）。
+pid_t fork();
+| 回傳值 | 說明           |
+| --- | ------------ |
+| >0  | 父行程，回傳子行程PID |
+| =0  | 子行程          |
+| -1  | 建立失敗         |
+    範例
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+    pid_t pid = fork();
+
+    if(pid == 0)
+        printf("I am child.\n");
+    else
+        printf("I am parent.\n");
+
+    return 0;
+}
+    結果
+I am parent.
+I am child.
+2. exec()
+功能
+利用新的程式取代目前行程。
+常見函式：
+execl()
+execv()
+execlp()
+execvp()
+execve()
+    範例
+#include <unistd.h>
+
+int main()
+{
+    execl("/bin/ls","ls","-l",NULL);
+}
+    結果
+目前程式
+↓
+
+被 ls -l 完全取代
+3. wait()
+等待子行程結束。
+wait(NULL);
+    範例
+fork();
+
+if(pid==0)
+{
+    printf("Child\n");
+}
+else
+{
+    wait(NULL);
+    printf("Parent\n");
+}
+    結果
+Child
+Parent
+4. exit()
+結束行程。
+exit(0);
+0 通常代表正常結束。
+5. getpid()
+取得自己的 PID。
+printf("%d",getpid());
+6. getppid()
+取得父行程 PID。
+printf("%d",getppid());
+7. kill()
+送訊號給行程。
+kill(pid,SIGKILL);
+常見 Signal
+| Signal  | 功能     |
+| ------- | ------ |
+| SIGINT  | Ctrl+C |
+| SIGTERM | 正常終止   |
+| SIGKILL | 強制終止   |
+| SIGSTOP | 暫停     |
+
+
+Unix 檔案系統呼叫
+Unix 將所有裝置都視為檔案（Everything is a File）。
+    例如
+硬碟
+滑鼠
+鍵盤
+終端機
+Socket
+Pipe
+都可以利用相同 API 存取。
+1. open()
+開啟檔案
+int fd=open("test.txt",O_RDONLY);
+回傳
+fd(File Descriptor)
+例如
+3
+4
+5
+常見模式
+O_RDONLY
+O_WRONLY
+O_RDWR
+O_CREAT
+O_APPEND
+O_TRUNC
+2. read()
+讀取檔案。
+char buf[100];
+read(fd,buf,100);
+3. write()
+寫入檔案。
+write(fd,"Hello",5);
+4. close()
+關閉檔案。
+close(fd);
+5. lseek()
+移動讀寫位置。
+lseek(fd,0,SEEK_SET);
+模式
+SEEK_SET
+SEEK_CUR
+SEEK_END
+6. stat()
+取得檔案資訊。
+struct stat st;
+
+stat("a.txt",&st);
+可以得到
+大小
+建立時間
+權限
+inode
+7. unlink()
+刪除檔案。
+mkdir("dir",0755);
+10. rmdir()
+刪除空資料夾。
+rmdir("dir");
+File Descriptor（檔案描述子）
+Unix 使用整數管理所有開啟的檔案。
+| FD | 代表                      |
+| -- | ----------------------- |
+| 0  | Standard Input（stdin）   |
+| 1  | Standard Output（stdout） |
+| 2  | Standard Error（stderr）  |
+例如
+write(1,"Hello\n",6);
+等同
+printf("Hello\n");
+open → read → close 流程
+檔案
+ │
+ │
+open()
+ │
+fd=3
+ │
+read()
+ │
+buffer
+ │
+close()
+open → write → close 流程
+程式資料
+     │
+write()
+     │
+fd
+     │
+檔案
+Process 與 File System 關係
+Program
+   │
+   ▼
+Process
+   │
+fork()
+   │
+Child
+   │
+exec()
+   │
+執行程式
+   │
+open()
+   │
+read()
+   │
+write()
+   │
+close()
+Process 與 File System 關係
+Program
+   │
+   ▼
+Process
+   │
+fork()
+   │
+Child
+   │
+exec()
+   │
+執行程式
+   │
+open()
+   │
+read()
+   │
+write()
+   │
+close()
+行程與檔案系統常用系統呼叫整理
+行程（Process）
+| 系統呼叫        | 功能           |
+| ----------- | ------------ |
+| `fork()`    | 建立子行程        |
+| `exec()`    | 執行新程式並取代目前行程 |
+| `wait()`    | 等待子行程結束      |
+| `exit()`    | 結束行程         |
+| `getpid()`  | 取得目前行程 PID   |
+| `getppid()` | 取得父行程 PID    |
+檔案系統（File System）
+| 系統呼叫       | 功能       |
+| ---------- | -------- |
+| `open()`   | 開啟檔案     |
+| `read()`   | 讀取檔案內容   |
+| `write()`  | 寫入檔案內容   |
+| `close()`  | 關閉檔案     |
+| `lseek()`  | 移動檔案讀寫位置 |
+| `stat()`   | 取得檔案資訊   |
+| `unlink()` | 刪除檔案     |
+| `rename()` | 重新命名檔案   |
+| `mkdir()`  | 建立目錄     |
+| `rmdir()`  | 刪除空目錄    |
+重點整理
+行程管理：透過 fork() 建立新行程、exec() 執行其他程式、wait() 同步父子行程、exit() 結束行程，並可使用 kill() 傳送訊號控制行程。
+檔案操作：通常遵循 open() → read()/write() → close() 的流程，以檔案描述子（File Descriptor）作為操作依據。
+Unix 設計理念：將檔案、裝置、管道（Pipe）、Socket 等資源統一視為「檔案」，因此可透過一致的系統呼叫介面進行存取，使程式設計更加簡潔且具一致性。
+
+
+連結
+https://chatgpt.com/share/6a2ec080-d904-83ee-a5fb-2d279d1eab36
